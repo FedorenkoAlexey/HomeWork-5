@@ -1,4 +1,36 @@
 let slideIndex = 1;
+
+const prev = document.getElementById("prev");
+const next = document.getElementById("next");
+const dot1 = document.getElementById("dot1");
+const dot2 = document.getElementById("dot2");
+const dot3 = document.getElementById("dot3");
+const dot4 = document.getElementById("dot4");
+const dot5 = document.getElementById("dot5");
+
+prev.addEventListener("click", function() {
+  plusSlides(-1);
+});
+next.addEventListener("click", function() {
+  plusSlides(1);
+});
+
+dot1.addEventListener("click", function() {
+  currentSlide(1);
+});
+dot2.addEventListener("click", function() {
+  currentSlide(2);
+});
+dot3.addEventListener("click", function() {
+  currentSlide(3);
+});
+dot4.addEventListener("click", function() {
+  currentSlide(4);
+});
+dot5.addEventListener("click", function() {
+  currentSlide(5);
+});
+
 showSlides(slideIndex);
 
 function plusSlides(n) {
@@ -28,4 +60,5 @@ function showSlides(n) {
   slides[slideIndex - 1].style.display = "block";
   dots[slideIndex - 1].className += " active";
 }
+
 //-------------------------------------------
