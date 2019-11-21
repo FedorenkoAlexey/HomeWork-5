@@ -1,64 +1,108 @@
-let slideIndex = 1;
-
+const wrapper = document.getElementById("slider");
+const items = document.getElementById("container");
 const prev = document.getElementById("prev");
 const next = document.getElementById("next");
-const dot1 = document.getElementById("dot1");
-const dot2 = document.getElementById("dot2");
-const dot3 = document.getElementById("dot3");
-const dot4 = document.getElementById("dot4");
-const dot5 = document.getElementById("dot5");
+
+let posX1 = 0;
+let posX2 = 0;
+let posInitial;
+let posFinal;
+const threshold = 100,
+  slides = items.getElementsByClassName("slide"),
+  slidesLength = slides.length,
+  slideSize = items.getElementsByClassName("slide")[0].offsetWidth,
+  firstSlide = slides[0],
+  lastSlide = slides[slidesLength - 1],
+  cloneFirst = firstSlide.cloneNode(true),
+  cloneLast = lastSlide.cloneNode(true);
+let index = 0;
+let allowShift = true;
+
+items.appendChild(cloneFirst);
+items.insertBefore(cloneLast, firstSlide);
+items.onmousedown = dragStart;
+items.addEventListener("transitionend", checkIndex);
 
 prev.addEventListener("click", function() {
-  plusSlides(-1);
+  shiftSlide(-1);
 });
 next.addEventListener("click", function() {
-  plusSlides(1);
+  shiftSlide(1);
 });
 
-dot1.addEventListener("click", function() {
-  currentSlide(1);
-});
-dot2.addEventListener("click", function() {
-  currentSlide(2);
-});
-dot3.addEventListener("click", function() {
-  currentSlide(3);
-});
-dot4.addEventListener("click", function() {
-  currentSlide(4);
-});
-dot5.addEventListener("click", function() {
-  currentSlide(5);
-});
+function dragStart(e) {
+  e = e || window.event;
+  e.preventDefault();
+  posInitial = items.offsetLeft;
 
-showSlides(slideIndex);
-
-function plusSlides(n) {
-  showSlides((slideIndex += n));
+  if (e.type == "touchstart") {
+    posX1 = e.touches[0].clientX;
+  } else {
+    posX1 = e.clientX;
+    document.onmouseup = dragEnd;
+    document.onmousemove = dragAction;
+  }
 }
 
-function currentSlide(n) {
-  showSlides((slideIndex = n));
+function dragAction(e) {
+  e = e || window.event;
+
+  if (e.type == "touchmove") {
+    posX2 = posX1 - e.touches[0].clientX;
+    posX1 = e.touches[0].clientX;
+  } else {
+    posX2 = posX1 - e.clientX;
+    posX1 = e.clientX;
+  }
+  items.style.left = items.offsetLeft - posX2 + "px";
 }
 
-function showSlides(n) {
-  let i;
-  let slides = document.getElementsByClassName("slides");
-  let dots = document.getElementsByClassName("dot");
-  if (n > slides.length) {
-    slideIndex = 1;
+function dragEnd(e) {
+  posFinal = items.offsetLeft;
+  if (posFinal - posInitial < -threshold) {
+    shiftSlide(1, "drag");
+  } else if (posFinal - posInitial > threshold) {
+    shiftSlide(-1, "drag");
+  } else {
+    items.style.left = posInitial + "px";
   }
-  if (n < 1) {
-    slideIndex = slides.length;
-  }
-  for (i = 0; i < slides.length; i++) {
-    slides[i].style.display = "none";
-  }
-  for (i = 0; i < dots.length; i++) {
-    dots[i].className = dots[i].className.replace(" active", "");
-  }
-  slides[slideIndex - 1].style.display = "block";
-  dots[slideIndex - 1].className += " active";
+
+  document.onmouseup = null;
+  document.onmousemove = null;
 }
 
-//-------------------------------------------
+function shiftSlide(dir, action) {
+  items.classList.add("move");
+
+  if (allowShift) {
+    if (!action) {
+      posInitial = items.offsetLeft;
+    }
+
+    if (dir == 1) {
+      items.style.left = posInitial - slideSize + "px";
+      index++;
+    } else if (dir == -1) {
+      items.style.left = posInitial + slideSize + "px";
+      index--;
+    }
+  }
+
+  allowShift = false;
+}
+
+function checkIndex() {
+  items.classList.remove("move");
+
+  if (index == -1) {
+    items.style.left = -(slidesLength * slideSize) + "px";
+    index = slidesLength - 1;
+  }
+
+  if (index == slidesLength) {
+    items.style.left = -(1 * slideSize) + "px";
+    index = 0;
+  }
+
+  allowShift = true;
+}

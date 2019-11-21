@@ -1,98 +1,85 @@
-.container {
-  max-width: 1000px;
-  position: relative;
-  margin: auto;
+body .slider {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1000px;
+  height: 300px;
 }
 
-.slides {
+body .slider .carousel {
+  overflow: hidden;
+  position: relative;
+  width: 1000px;
+  height: 300px;
+}
+
+.container {
+  display: flex;
+  position: relative;
+  top: 0;
+  left: -1000px;
+  width: 8000px;
+}
+
+.slide {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid black;
-  width: auto;
+  flex-direction: column;
+  width: 1000px;
   height: 300px;
-  background-color: rgb(8, 138, 214);
+}
+
+.one {
+  background-color: #088ad6;
 }
 .two {
-  background-color: rgb(125, 231, 125);
+  background-color: #7de77d;
 }
 .three {
-  background-color: rgb(204, 135, 231);
+  background-color: #cc87e7;
 }
 .four {
-  background-color: rgb(248, 112, 112);
+  background-color: #f87070;
 }
 .five {
-  background-color: rgb(60, 13, 121);
+  background-color: #3c0d79;
+}
+
+.text {
+  top: 11%;
+  color: #fff;
+  font-size: 60px;
+  font-weight: bold;
+  padding: 8px 12px;
+  width: 97%;
+  text-align: center;
+}
+
+.container.move {
+  transition: left 0.5s ease-out;
 }
 
 .prev,
 .next {
   cursor: pointer;
   position: absolute;
-  top: 50%;
   width: auto;
-  /* height: 5px; */
   margin-top: -20px;
-  /* padding: 17px; */
   color: white;
   font-weight: bold;
   font-size: 18px;
   transition: 0.6s ease;
-  /* border-radius: 50%; */
+}
+
+.prev {
+  top: 50%;
+  left: 0;
 }
 
 .next {
+  top: 50%;
   right: 0;
-  border-radius: 50%;
-}
-
-.text {
-  margin-top: 11%;
-  color: #fff;
-  font-size: 60px;
-  font-weight: bold;
-  padding: 8px 12px;
-  position: absolute;
-  width: 97%;
-  text-align: center;
-}
-
-.numbertext {
-  color: #f2f2f2;
-  font-size: 12px;
-  padding: 8px 12px;
-  position: absolute;
-  top: 0;
-}
-
-.dot {
-  cursor: pointer;
-  height: 15px;
-  width: 15px;
-  margin: 0 2px;
-  background-color: #bbb;
-  border-radius: 50%;
-  display: inline-block;
-  transition: background-color 0.6s ease;
-}
-
-.active,
-.dot:hover {
-  background-color: rgba(8, 138, 214, 0.644);
-}
-
-.anim {
-  animation-name: anim;
-  animation-duration: 1.5s;
-}
-
-@keyframes anim {
-  from {
-    opacity: 0.4;
-  }
-  to {
-    opacity: 1;
-  }
 }
 
